@@ -6,17 +6,42 @@ import { StoreContext } from '../../context/StoreContext';
 
 const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("home");
-  const {getTotalCartAmount} = useContext(StoreContext);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { getTotalCartAmount } = useContext(StoreContext);
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+  };
 
   return (
-    <div className='Navbar'>
-      <Link to='/'><img src={assets.logo} alt="logo" className='logo' /></Link>
+    <div className='navbar'>
+      <Link to='/' className='logo-link'>
+        <img src={assets.logo} alt="logo" className='logo' />
+      </Link>
 
-      <ul className="Navbar-menu">
+      {/* Hamburger Icon for Mobile */}
+      <div 
+        className={`hamburger ${mobileMenuOpen ? 'active' : ''}`} 
+        onClick={toggleMobileMenu}
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      {/* Desktop Navigation */}
+      <ul className={`navbar-menu ${mobileMenuOpen ? 'mobile-open' : ''}`}>
         <li>
           <Link
             to="/"
-            onClick={() => setMenu("home")}
+            onClick={() => {
+              setMenu("home");
+              closeMobileMenu();
+            }}
             className={menu === "home" ? "active" : ""}
           >
             Home
@@ -25,7 +50,10 @@ const Navbar = ({ setShowLogin }) => {
         <li>
           <a
             href="#explore-menu"
-            onClick={() => setMenu("menu")}
+            onClick={() => {
+              setMenu("menu");
+              closeMobileMenu();
+            }}
             className={menu === "menu" ? "active" : ""}
           >
             Menu
@@ -34,7 +62,10 @@ const Navbar = ({ setShowLogin }) => {
         <li>
           <a
             href="#app-download"
-            onClick={() => setMenu("mobile-app")}
+            onClick={() => {
+              setMenu("mobile-app");
+              closeMobileMenu();
+            }}
             className={menu === "mobile-app" ? "active" : ""}
           >
             Mobile App
@@ -43,7 +74,10 @@ const Navbar = ({ setShowLogin }) => {
         <li>
           <a
             href="#footer"
-            onClick={() => setMenu("contact-us")}
+            onClick={() => {
+              setMenu("contact-us");
+              closeMobileMenu();
+            }}
             className={menu === "contact-us" ? "active" : ""}
           >
             Contact Us
@@ -51,11 +85,13 @@ const Navbar = ({ setShowLogin }) => {
         </li>
       </ul>
 
-      <div className='Navbar-right'>
-        <img src={assets.search_icon} alt="search" />
+      <div className='navbar-right'>
+        <img src={assets.search_icon} alt="search" className='search-icon' />
         <div className='navbar-search-icon'>
-          <Link to='/cart'><img src={assets.basket_icon} alt="basket" /></Link>
-          <div className={getTotalCartAmount()===0?"":"dot"}></div>
+          <Link to='/cart'>
+            <img src={assets.basket_icon} alt="basket" />
+          </Link>
+          <div className={getTotalCartAmount() === 0 ? "" : "dot"}></div>
         </div>
         <button onClick={() => setShowLogin(true)}>Sign In</button>
       </div>
@@ -64,4 +100,3 @@ const Navbar = ({ setShowLogin }) => {
 };
 
 export default Navbar;
- 
